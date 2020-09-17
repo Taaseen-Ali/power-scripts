@@ -1,0 +1,35 @@
+#!/bin/bash
+
+files=$(grep "#$" tit.init)
+info=($(grep "%/" tit.init | sed "s/%\///"))
+location="${info[1]}@${info[0]}:${info[3]}"
+
+if [ -z "$files" ]
+then
+    echo "nothing to push"
+    exit 0
+fi
+
+while read f
+do
+    arr=($f)
+    lastmod="$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" ${arr[0]})"
+    echo "pushing ${arr[0]}..."
+    
+    if sshpass -p "${info[2]}" scp "${arr[0]}" "$location"
+    then
+
+	sed -i ".bak" "s/^${arr[0]}.*/${arr[0]} $lastmod/" tit.init
+	echo "done"
+    else
+	echo "unable to transfer files"
+	exit 1
+    fi
+done <<< "$files"
+
+if sshpass -p "${info[2]}" scp tit.init "$location"
+then
+    echo "tit repository updated"
+else
+    echo "update failed please try again"
+fi

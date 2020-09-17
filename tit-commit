@@ -1,0 +1,16 @@
+#!/bin/bash
+
+files=$(grep -v '^%/' tit.init)
+
+while read line
+do
+    myarr=($line)
+    
+    lastmod="$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" ${myarr[0]})"
+    
+    if [ "$lastmod" != "${myarr[1]} ${myarr[2]}" ]
+    then
+	sed -i ".bak" "s/$line.*/${myarr[0]} ${myarr[1]} ${myarr[2]} #/" tit.init
+    fi
+done <<< "$files"
+      

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+touch tit.init
+basename="~/Documents/${PWD##*/}"
+
+echo "%/tali1.gq" > tit.init
+echo "%/taaseen" >> tit.init
+echo "%/something" >> tit.init
+echo "%/$basename" >> tit.init
+sshpass -p "something" ssh -o StrictHostKeyChecking=no taaseen@tali1.gq "if [ ! -d ${basename} ]; then mkdir $basename; else echo 'remote directory already exists'; fi"
+
+
+
+

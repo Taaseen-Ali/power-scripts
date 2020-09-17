@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ~/Documents/projects/blockchain/Microlleon
+npm start
+

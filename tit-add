@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for i in $@	 
+do
+    if [ -f "$i" ]
+    then
+	timestamp="$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$i")"
+	if  grep -q "$i" tit.init 
+	then
+	    echo "$i already added"
+	else
+	    echo "$i $timestamp #" >> tit.init
+
+	fi
+    else
+	echo "file or directory does not exist"
+    fi
+done
+

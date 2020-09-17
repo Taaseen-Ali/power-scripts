@@ -1,0 +1,22 @@
+#!/bin/bash
+
+year="$(date +'%Y')"
+month="$(date +'%B')"
+
+filename="$(date +'%d%b%y')"
+[ ! -z $1 ] && filename="$filename-$1"
+
+notesdir="$HOME/Documents/notes"
+filedir="$notesdir/$year/$month"
+pathtofile="$filedir/$filename"
+
+
+[ ! -d "$notesdir/$year" ] && mkdir "$notesdir/$year"
+[ ! -d "$notesdir/$year/$month" ] && mkdir "$notesdir/$year/$month"
+
+touch $pathtofile
+echo $pathtofile > "$notesdir/.currentnote"
+emacs $pathtofile -f org-mode &
+
+
+

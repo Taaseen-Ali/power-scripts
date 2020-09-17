@@ -1,0 +1,23 @@
+#!/bin/bash
+notesdir="$HOME/Documents/notes"
+if [ -z $1 ]
+then
+    emacs $(cat $notesdir/.currentnote) -f org-mode&
+else
+    #if the $1 is of the date format, do the following
+    if [[ $1 =~ [0-9]{2}([A-Z][a-z]{2})([0-9]{2}) ]]
+    then
+	year=20${1:5}
+	month=${11:2:3}
+    
+    	emacs $(echo "$notesdir/$year/$month"*"/"$1*) -f org-mode&
+    else
+	currentnote="$(cat $notesdir/.currentnote)"
+	lookupdir="$(dirname $currentnote)"
+	pattern="$lookupdir/*-$1*"
+	files=( $pattern )
+	emacs $(echo "${files[0]}") -f org-mode&
+
+    fi
+fi
+

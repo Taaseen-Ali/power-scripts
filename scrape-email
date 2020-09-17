@@ -1,0 +1,22 @@
+#!/bin/bash
+
+first_name=$1
+last_name=${@: -1}
+first_init=${first_name:0:1}
+last_init=${last_name:0:1}
+
+for name in $@
+do
+    url_name="$url_name+$name"
+	   
+done	    
+
+urls=$(curl -sA "Chrome" "http://www.google.com/search?hl=en&q=${url_name:1}" | grep -E -a -o 'div class="[a-zA-Z0-9.-]*"><a href="/url\?q=[a-z0-9:/.-]*' | sed 's/^.*q=//')
+
+
+#urls=$(grep -E -a -o 'div class="[a-zA-Z0-9.-]*"><a href="/url\?q=[a-z0-9:/.-]*' search.txt | sed 's/^.*q=//')
+
+for url in $urls
+do
+    curl -sSA "Chrome" $url | grep -i -E -o "\b[$first_init$last_init][a-zA-Z0-9.-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+\b"
+done

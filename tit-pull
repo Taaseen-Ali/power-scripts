@@ -1,0 +1,34 @@
+#!/bin/bash
+
+info=($(grep "%/" tit.init | sed "s/%\///"))
+location="${info[3]}"
+
+server_files=$(sshpass -p "something" ssh -o StrictHostKeyChecking=no "taaseen@tali1.gq" "cd $location; cat tit.init" | grep -v "%/")
+
+while read f
+do
+    arr=($f)
+    local_entry=($(grep "${arr[0]}" tit.init))
+    
+    if [ "${arr[1]} ${arr[2]}" != "${local_entry[1]} ${local_entry[2]}" ]
+    then
+	echo "pulling ${arr[0]}..."
+	if sshpass -p "${info[2]}" scp "${info[1]}@${info[0]}:$location/${arr[0]}" ./
+	then
+	    echo "done"
+	else
+	    echo "unable to pull files"
+	    exit 1
+	fi
+    fi
+    
+done <<< "$server_files"
+
+if sshpass -p "${info[2]}" scp "${info[1]}@${info[0]}:$location/tit.init" ./
+then
+    echo "everything up to date"
+else
+    echo "update failed please try again"
+fi
+
+
