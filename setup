@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "export PATH=\"\$HOME/bin:\$PATH\"" >> ~/.bashrc
+echo "alias test=\"cd ~/Documents/sandbox\"" >> ~/.bashrc
+echo "alias proj=\"cd ~/Documents/Projects\"" >> ~/.bashrc
+echo "alias bashrc=\"emacs ~/.bashrc &\"" >> ~/.bashrc
+source ~/.bashrc
