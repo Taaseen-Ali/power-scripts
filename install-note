@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir ~/Documents/notes
+touch ~/Documents/notes/.currentnote
+echo "export NOTES=\"\$(dirname \$(cat \$HOME/Documents/notes/.currentnote))\"" >> ~/.bashrc
+echo "alias notes=\"cd \$NOTES\"" >> ~/.bashrc
+source ~/.bashrc
